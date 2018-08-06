@@ -1,0 +1,29 @@
+{
+  "name": "gulptest",
+  "version": "1.0.0",
+  "description": "this is just a test ",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digamber89/gulp-boilerplate.git"
+  },
+  "keywords": [
+    "none"
+  ],
+  "author": "wen",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-jshint": "^2.0.4",
+    "gulp-notify": "^3.0.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.1",
+    "gulp-sourcemaps": "^2.6.1",
+    "gulp-uglify": "^3.0.1",
+    "gulp-uglifycss": "^1.0.8",
+    "jshint": "^2.9.6",
+    "jshint-stylish": "^2.2.1"
+  }
+}

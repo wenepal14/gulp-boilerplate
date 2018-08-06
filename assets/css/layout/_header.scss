@@ -1,0 +1,16 @@
+header {
+	position: fixed;
+	width: 100%;
+	left: 0;
+	top: 0;
+	z-index: 9;
+	.header-top {
+		padding: 10px 0;
+	    background: #000;
+	}
+	.main-nav {
+	    padding: 18px 0;
+	    background: #fcfbfc;
+	    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.1);
+	}
+}
