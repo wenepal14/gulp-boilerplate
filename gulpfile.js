@@ -1,7 +1,7 @@
 /*
 	This is a learner template , intended to be very easy to use
 	Only two simple tasks are done right now
-	1) Take .scss file from assets/style.scss can be changed via var stylesSource. Compile it, generate sourcemap and generate a non-minified and minified version and save it in css folder in the root of the project
+	1) Take .scss file from assets/style.scss can be changed via let stylesSource. Compile it, generate sourcemap and generate a non-minified and minified version and save it in css folder in the root of the project
 	2) Take .js files located in .assets/js/vendor and .assets/js/custom and 
 		i) concat (join) all js files
 		ii) minify them (see note for problems with minification)
@@ -15,27 +15,26 @@ To Do List
 		All online blogs says its a good tool but I am not sure right now
 */
 
-var gulp 			= require('gulp');
-var sass 			= require('gulp-sass'); // compiles SASS to CSS
-var sourcemaps 		= require('gulp-sourcemaps'); // generate css source maps
-var notify 		 	= require('gulp-notify'); // provides notification to use once task is complete
-var uglify 			= require('gulp-uglify'); // minifies js files
-var uglifycss    	= require('gulp-uglifycss'); // minifies css files
-var concat       	= require('gulp-concat');  //concatenates multiple js files 
-var rename       	= require('gulp-rename'); // Renames files E.g. style.css -> style.min.css
-var plumber 		= require('gulp-plumber');
-var jshint 			= require('gulp-jshint');
-var autoprefixer    = require('gulp-autoprefixer');
+let gulp 			= require('gulp');
+let sass 			= require('gulp-sass'); // compiles SASS to CSS
+let sourcemaps 		= require('gulp-sourcemaps'); // generate css source maps
+let notify 		 	= require('gulp-notify'); // provides notification to use once task is complete
+let uglify 			= require('gulp-uglify'); // minifies js files
+let uglifycss    	= require('gulp-uglifycss'); // minifies css files
+let concat       	= require('gulp-concat');  //concatenates multiple js files 
+let rename       	= require('gulp-rename'); // Renames files E.g. style.css -> style.min.css
+let plumber 		= require('gulp-plumber');
+let autoprefixer    = require('gulp-autoprefixer');
 
 
-var stylesSource 			 = './assets/css/**/*.scss';
-var jsVendorSource 			 = './assets/js/vendor/*.js';
-var jsVendorDestination      = './js';
-var jsVendorFile 			 = 'vendor';
+let stylesSource 			 = './assets/css/**/*.scss';
+let jsVendorSource 			 = './assets/js/vendor/*.js';
+let jsVendorDestination      = './js';
+let jsVendorFile 			 = 'vendor';
 
-var jsCustomSource 			 = './assets/js/custom/*.js';
-var jsCustomDestination 	 = './js';
-var jsCustomFile	 		 = 'main';
+let jsCustomSource 			 = './assets/js/custom/*.js';
+let jsCustomDestination 	 = './js';
+let jsCustomFile	 		 = 'main';
 
 
 /*
@@ -67,8 +66,6 @@ gulp.task('compileStyles', function(){
 gulp.task('compileVendorJS', function(){
 	return gulp.src(jsVendorSource)
 		   .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}) )
-		   .pipe( jshint() )
-		   .pipe(jshint.reporter('jshint-stylish'))
 		   .pipe( concat( jsVendorFile + '.js' )  )
 		   .pipe( gulp.dest( jsVendorDestination ) )
 		   .pipe( rename( {
@@ -85,8 +82,6 @@ gulp.task('compileVendorJS', function(){
 gulp.task('compileCustomJS', function(){
 	return gulp.src(jsCustomSource)
 		   .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}) )
-		   .pipe( jshint() )
-		   .pipe(jshint.reporter('jshint-stylish'))
 		   .pipe( concat( jsCustomFile  + '.js' )  )
 		   .pipe( gulp.dest( jsCustomDestination ) )
 		   .pipe( rename( {
@@ -100,8 +95,9 @@ gulp.task('compileCustomJS', function(){
 
 
 /*Default tasks that will be run when using "gulp" command*/
-gulp.task('default', ['compileStyles', 'compileVendorJS', 'compileCustomJS' ],  function(){
-	gulp.watch( stylesSource, ['compileStyles'] );
-	gulp.watch( jsVendorSource, ['compileVendorJS'] );
-	gulp.watch( jsCustomSource, ['compileCustomJS'] );
-});
+gulp.task('default', gulp.parallel('compileStyles', 'compileVendorJS', 'compileCustomJS',  (done) => {
+	gulp.watch( stylesSource, gulp.series('compileStyles'));
+	gulp.watch( jsVendorSource, gulp.series('compileVendorJS'));
+	gulp.watch( jsCustomSource, gulp.series('compileCustomJS'));
+	done();
+}));
